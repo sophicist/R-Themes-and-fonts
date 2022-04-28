@@ -1,0 +1,220 @@
+---
+title: "Untitled"
+author: "John Kamau Kamau"
+date: '2022-04-28'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F,warning = F,message = F)
+```
+
+# All Themes
+
+## Tufte theme
+
+```{r cars}
+library(tidyverse)
+library(ggthemes)
+library(reshape2)
+cars %>% head() %>% melt() %>% 
+  ggplot(aes(x = variable,y =value))+
+  #geom_boxplot()+
+  geom_tufteboxplot()+ geom_tufteboxplot(median.type = "line", 
+                      whisker.type = 'line',
+                      hoffset = 0, width = 5)+
+  labs(title = "awesome boxplots")
+```
+# themes wsj
+
+```{r}
+cars %>% ggplot(aes(x = speed,y = dist))+geom_point()+
+  theme_wsj()
+```
+
+## HBR themes
+
+```{r}
+library(ggplot2)
+# library(hrbrthemes)
+# cars %>% ggplot(aes(x = speed,y = dist))+geom_point()+
+#   theme_ipsum_ps()
+```
+## URB themes
+
+```{r}
+library(urbnthemes)
+cars %>% ggplot(aes(x = speed,y = dist))+geom_point()+
+  theme_urbn_print()
+```
+
+# BBC themes
+
+```{r}
+library(bbplot)
+
+cars %>% ggplot(aes(x = speed,y = dist))+geom_point()+ bbc_style()
+
+#finalise_plot()
+```
+
+## GGpomological
+
+```{r}
+scales::show_col(ggpomological:::pomological_palette)
+scales::show_col(unlist(ggpomological:::pomological_base))
+
+# devtools::install_github("gadenbuie/ggpomological")
+# 
+# # To include the vignette
+# devtools::install_github("gadenbuie/ggpomological", build_vignettes=TRUE)
+
+# Prep msleep data
+msleep <- ggplot2::msleep[, c("vore", "sleep_rem", "sleep_total")]
+msleep <- msleep[complete.cases(msleep), ]
+msleep$vore <- paste0(msleep$vore, "vore")
+
+# Base plot
+basic_msleep_plot <- ggplot(msleep) +
+  aes(x = sleep_rem, y = sleep_total, color = vore) +
+  geom_point(size = 2) +
+  labs(color = NULL)
+library(ggpomological)
+# Just your standard ggplot
+basic_msleep_plot + theme_pomological()
+#  + theme_pomological_plain() 
+# theme_pomological_fancy()
+```
+## GGthemr
+
+```{r}
+#devtools::install_github('Mikata-Project/ggthemr')
+library(ggthemr)
+# https://github.com/Mikata-Project/ggthemr
+#ggthemr('chalk')
+cars %>% ggplot(aes(x = speed,y = dist))+geom_point()
+
+```
+
+## Tech themes
+
+```{r}
+#::install_github("ricardo-bion/ggtech",                           dependencies=TRUE)
+library(ggtech)
+d <- qplot(carat, data = diamonds[diamonds$color %in%LETTERS[4:7], ], geom = "histogram", bins=30, fill = color)
+ d+ scale_fill_tech(theme="airbnb") + 
+  labs(title="Airbnb theme", 
+       subtitle="now with subtitles for ggplot2 >= 2.1.0")
+# https://github.com/ricardo-bion/ggtech
+ 
+ d + theme_tech(theme="facebook") +
+  scale_fill_tech(theme="facebook") + 
+  labs(title="Facebook theme", 
+       subtitle="now with subtitles for ggplot2 >= 2.1.0")
+ 
+ 
+ d + theme_tech(theme="google") + 
+  scale_fill_tech(theme="google") + 
+  labs(title="Google theme", 
+       subtitle="now with subtitles for ggplot2 >= 2.1.0")
+
+ data("iris")
+
+d1 <- qplot(x  = Sepal.Length, y =Sepal.Width,colour = Species,data = iris,geom = "point")
+ 
+ d1 + theme_tech(theme="etsy") + 
+  scale_color_tech(theme="etsy") + 
+  labs(title="Etsy theme", 
+       subtitle="now with subtitles for ggplot2 >= 2.1.0")
+```
+
+## Artyfarty package
+
+```{r}
+#  devtools::install_github('datarootsio/artyfarty')
+
+library(artyfarty)
+ggplot(diamonds) +
+  geom_bar(aes(cut, fill=cut)) +
+  theme_dataroots() +
+  ggtitle("Sparkly stones") +
+  scale_fill_manual(values = pal("dataroots"))
+```
+
+## Fira themes
+
+```{r}
+# remotes::install_github("vankesteren/firatheme")
+
+library(ggplot2)
+library(firatheme)
+
+ggplot(mtcars, aes(x = mpg*0.43, y = wt*0.4535924, colour = factor(cyl))) +
+       geom_point(size = 2) + geom_smooth(se = FALSE) +
+       labs(title = "Car weight vs efficiency",
+            x = "Efficiency (km/l)",
+            y = "Weight (1000 kg)",
+            colour = "Cylinders") +
+       theme_fira() +
+       scale_colour_fira()
+
+firaSave("plot.png", device = "png")
+```
+
+## xkcd package
+
+```{r}
+library(xkcd)
+#vignette("xkcd-intro")
+library(extrafont)
+
+### Already have read in fonts (see previous answer on how to do this)
+loadfonts()
+
+### Set up the trial dataset 
+data <- NULL
+data$x <- seq(1, 10, 0.1)
+data$y1 <- sin(data$x)
+data$y2 <- cos(data$x)
+data$xaxis <- -1.5
+
+data <- as.data.frame(data)
+
+### XKCD theme
+theme_xkcd <- theme(
+    panel.background = element_rect(fill="white"), 
+    axis.ticks = element_line(colour=NA),
+    panel.grid = element_line(colour="white"),
+    axis.text.y = element_text(colour=NA), 
+    axis.text.x = element_text(colour="black"),
+    text = element_text(size=16, family="Humor Sans")
+    )
+
+ ### Plot the chart
+ p <- ggplot(data=data, aes(x=x, y=y1))+
+      geom_line(aes(y=y2), position="jitter")+
+      geom_line(colour="white", size=3, position="jitter")+
+      geom_line(colour="red", size=1, position="jitter")+
+      geom_text(family="Humor Sans", x=6, y=-1.2, label="A SIN AND COS CURVE")+
+      geom_line(aes(y=xaxis), position = position_jitter(h = 0.005), colour="black")+
+      scale_x_continuous(breaks=c(2, 5, 6, 9), 
+      labels = c("YARD", "STEPS", "DOOR", "INSIDE"))+labs(x="", y="")+
+      theme_xkcd
+
+ggsave("xkcd_ggplot.jpg", plot=p, width=8, height=5)
+```
+```{r}
+p
+```
+
+## Dark themed R themes
+
+```{r}
+library(ggdark)
+
+diamonds %>% ggplot(aes(x = price,y = carat,color = cut))+geom_point()+
+  dark_theme_classic()
+```
+
