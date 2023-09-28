@@ -32,9 +32,16 @@ fig +  theme_minimal() + theme(legend.position = "none")
 # TV Themes
 
 ```{r}
+
+```
+
+
+```{r}
 #install.packages("tvthemes") # v1.1.0
 library(tvthemes)
 library(extrafont)
+
+#font_import()
 loadfonts()
 
 import_simpsons()         ## "Akbar" font
